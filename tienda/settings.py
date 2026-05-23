@@ -82,12 +82,17 @@ WSGI_APPLICATION = 'tienda.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        
         'NAME': 'techstore_db',
+        
         'USER': 'tech_user',
-        'PASSWORD': 'aeaok',
+        
+        'PASSWORD': 'Techstore_4',
+        
         'HOST': '172.31.85.199',
+        
         'PORT': '3306',
-
+        
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4',
