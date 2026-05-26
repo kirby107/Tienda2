@@ -5,6 +5,7 @@ from productos.models import Producto
 class Pedido(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
+    promocion = models.ForeignKey('productos.Promocion', null=True, blank=True, on_delete=models.SET_NULL)
 
     ESTADOS = (
         ('pendiente', 'Pendiente'),

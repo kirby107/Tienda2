@@ -33,6 +33,10 @@
                     {% endif %}
                 </a>
 
+                <a href="/pedidos/" class="btn btn-info btn-sm text-white">
+                    📦 {% if user.rol == 'cliente' %}Mis pedidos{% else %}Pedidos{% endif %}
+                </a>
+
                 <!-- CREAR PRODUCTO (VENDEDOR / ADMIN) -->
                 {% if user.rol == "vendedor" or user.rol == "admin" %}
                     <a href="/productos/crear/" class="btn btn-warning btn-sm">

@@ -69,10 +69,17 @@
 
     <form method="POST">
         {% csrf_token %}
+        {% if error %}
+            <div style="color:red; margin-bottom: 8px;">{{ error }}</div>
+        {% endif %}
         <input type="text" name="username" placeholder="Usuario" required>
         <input type="email" name="email" placeholder="Correo" required>
         <input type="password" name="password1" placeholder="Contraseña" required>
         <input type="password" name="password2" placeholder="Confirmar contraseña" required>
+        <select name="rol" required>
+            <option value="cliente">Cliente</option>
+            <option value="vendedor">Vendedor</option>
+        </select>
 
         <button type="submit">Crear cuenta</button>
     </form>

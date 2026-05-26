@@ -53,3 +53,25 @@ def carrito_count(request):
     return {
         'cart_count': sum(item['cantidad'] for item in carrito.values())
     }
+
+def sumar_producto(request, producto_id):
+    carrito = request.session.get('carrito', {})
+
+    if str(producto_id) in carrito:
+        carrito[str(producto_id)]['cantidad'] += 1
+
+    request.session['carrito'] = carrito
+    return redirect('ver_carrito')
+
+
+def restar_producto(request, producto_id):
+    carrito = request.session.get('carrito', {})
+
+    if str(producto_id) in carrito:
+        carrito[str(producto_id)]['cantidad'] -= 1
+
+        if carrito[str(producto_id)]['cantidad'] <= 0:
+            del carrito[str(producto_id)]
+
+    request.session['carrito'] = carrito
+    return redirect('ver_carrito')

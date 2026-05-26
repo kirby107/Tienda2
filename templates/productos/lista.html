@@ -6,6 +6,52 @@
 
     <h2>🛒 TechStore</h2>
 
+    <div class="mb-3">
+        {% if promociones %}
+            <div class="alert alert-success py-2 mb-2">
+                <strong>Promociones activas:</strong>
+                {% for promo in promociones %}
+                    <span class="badge bg-dark text-white me-1 mb-1">
+                        {{ promo.nombre }} {% if promo.descuento %}- {{ promo.descuento }}%{% endif %}
+                    </span>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-secondary py-2 mb-2">
+                No hay promociones activas por el momento.
+            </div>
+        {% endif %}
+    </div>
+
+    <form method="get" class="mb-4">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ query }}"
+                        class="form-control"
+                        placeholder="Buscar producto..."
+                    >
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select name="categoria" class="form-select">
+                    <option value="" {% if not categoria_id %}selected{% endif %}>Todas las categorías</option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}" {% if categoria_id == categoria.id|stringformat:"s" %}selected{% endif %}>
+                            {{ categoria.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2 d-grid">
+                <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+            </div>
+        </div>
+    </form>
+
     <div class="row">
 
         {% for producto in productos %}
@@ -33,6 +79,18 @@
                         <a href="/carrito/agregar/{{ producto.id }}/" class="btn btn-primary btn-sm mt-2">
                             Agregar al carrito
                         </a>
+
+                        {% if user.is_authenticated and user.rol == "vendedor" %}
+                            <a href="{% url 'editar_producto' producto.id %}"
+                               class="btn btn-secondary btn-sm mt-2">
+                                Editar
+                            </a>
+                        {% elif user.is_authenticated and user.rol == "admin" %}
+                            <a href="{% url 'editar_producto' producto.id %}"
+                               class="btn btn-secondary btn-sm mt-2">
+                                Editar
+                            </a>
+                        {% endif %}
 
                     </div>
 

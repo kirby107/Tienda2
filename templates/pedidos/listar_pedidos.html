@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-4">{% if user.rol == 'cliente' %}Mis Pedidos{% else %}Pedidos{% endif %}</h2>
+
+    {% if pedidos %}
+        <div class="row">
+            {% for pedido in pedidos %}
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5>Pedido #{{ pedido.id }}</h5>
+                            {% if user.rol != 'cliente' %}
+                                <p class="mb-1 text-muted">Cliente: {{ pedido.usuario.username }}</p>
+                            {% endif %}
+                            <p class="mb-1 text-muted">Fecha: {{ pedido.fecha|date:'d/m/Y H:i' }}</p>
+                            <p class="mb-1">Estado: <span class="badge bg-secondary">{{ pedido.get_estado_display }}</span></p>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'detalle_pedido' pedido.id %}" class="btn btn-sm btn-primary">Ver detalles</a>
+                                {% if user.rol == 'admin' %}
+                                    <form method="post" action="{% url 'eliminar_pedido' pedido.id %}" class="m-0" onsubmit="return confirm('¿Eliminar este pedido?');">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            No tienes pedidos todavía.
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

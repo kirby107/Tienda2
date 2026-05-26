@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Checkout</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="mb-3">Resumen de tu compra</h5>
+
+            {% for item in items %}
+                <div class="d-flex justify-content-between mb-2">
+                    <div>
+                        <strong>{{ item.producto.nombre }}</strong>
+                        <div class="text-muted">Cantidad: {{ item.cantidad }}</div>
+                    </div>
+                    <div>S/. {{ item.subtotal }}</div>
+                </div>
+            {% endfor %}
+
+            <form method="post">
+                {% csrf_token %}
+                {% if promociones %}
+                    <div class="mb-3">
+                        <label class="form-label">Aplicar promoción</label>
+                        <select name="promocion" class="form-select">
+                            <option value="">Ninguna</option>
+                            {% for promo in promociones %}
+                                <option value="{{ promo.id }}" {% if selected_promocion and promo.id == selected_promocion.id %}selected{% endif %}>
+                                    {{ promo.nombre }} - {{ promo.descuento }}%
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
+
+                <hr>
+                <div class="d-flex justify-content-between mb-2">
+                    <strong>Subtotal</strong>
+                    <strong>S/. {{ total }}</strong>
+                </div>
+                {% if discount > 0 %}
+                    <div class="d-flex justify-content-between mb-2 text-success">
+                        <strong>Descuento</strong>
+                        <strong>- S/. {{ discount|floatformat:2 }}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                        <strong>Total final</strong>
+                        <strong>S/. {{ total_final|floatformat:2 }}</strong>
+                    </div>
+                {% else %}
+                    <div class="d-flex justify-content-between mb-4">
+                        <strong>Total</strong>
+                        <strong>S/. {{ total }}</strong>
+                    </div>
+                {% endif %}
+
+                <button class="btn btn-primary w-100">Confirmar pedido</button>
+            </form>
+
+            <a href="/carrito/" class="btn btn-outline-secondary w-100 mt-2">Volver al carrito</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
