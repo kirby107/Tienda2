@@ -1,17 +1,78 @@
-<h2>Crear Producto</h2>
+{% extends "base.html" %}
 
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="nombre" placeholder="Nombre"><br>
-    <textarea name="descripcion"></textarea><br>
-    <input type="number" name="precio"><br>
-    <input type="number" name="stock"><br>
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">Crear Producto</h2>
 
-    <select name="categoria">
-        {% for c in categorias %}
-            <option value="{{ c.id }}">{{ c.nombre }}</option>
-        {% endfor %}
-    </select>
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
 
-    <button type="submit">Guardar</button>
-</form>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre del producto" required>
+                            <div class="invalid-feedback">Por favor ingresa el nombre del producto.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción</label>
+                            <textarea id="descripcion" name="descripcion" class="form-control" rows="4" placeholder="Descripción breve"></textarea>
+                        </div>
+
+                        <div class="row gy-3">
+                            <div class="col-md-6">
+                                <label for="precio" class="form-label">Precio</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">S/.</span>
+                                    <input type="number" step="0.01" id="precio" name="precio" class="form-control" placeholder="Precio" required>
+                                </div>
+                                <div class="invalid-feedback">Ingresa un precio válido.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="stock" class="form-label">Stock</label>
+                                <input type="number" id="stock" name="stock" class="form-control" placeholder="Cantidad disponible" required>
+                                <div class="invalid-feedback">Ingresa la cantidad en stock.</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 mt-3">
+                            <label for="categoria" class="form-label">Categoría</label>
+                            <select id="categoria" name="categoria" class="form-select" required>
+                                <option value="" disabled selected>Selecciona una categoría</option>
+                                {% for c in categorias %}
+                                    <option value="{{ c.id }}">{{ c.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">Selecciona una categoría.</div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">Guardar producto</button>
+                            <a href="/productos/" class="btn btn-outline-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+  'use strict'
+  var forms = document.querySelectorAll('.needs-validation')
+  Array.prototype.slice.call(forms).forEach(function (form) {
+    form.addEventListener('submit', function (event) {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+{% endblock %}

@@ -46,9 +46,7 @@
 
                 <!-- PANEL ADMIN -->
                 {% if user.rol == "admin" %}
-                    <a href="/admin-panel/" class="btn btn-danger btn-sm">
-                        Admin
-                    </a>
+                    <span class="text-white me-2">Panel de administrador</span>
                 {% endif %}
 
                 <!-- LOGOUT -->
@@ -75,5 +73,12 @@
     {% endblock %}
 </div>
 
+<script>
+function openAdminPanel() {
+    if (confirm('¿Deseas ir al panel de administración?')) {
+        window.location.href = '/admin-panel/';
+    }
+}
+</script>
 </body>
 </html>
