@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-q5$#2w=xu-r09^!(a8m7)n)*g9&#-1pxja2^nd%k_3$l%wa2bm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['100.48.22.14', 'ec2-100-48-22-14.compute-1.amazonaws.com']
 
 
 # Application definition
@@ -84,8 +84,22 @@ WSGI_APPLICATION = 'tienda.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        
+        'NAME': 'techstore_db',
+        
+        'USER': 'tech_user',
+        
+        'PASSWORD': 'Techstore_4',
+        
+        'HOST': '100.48.22.14',
+        
+        'PORT': '3306',
+        
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+        },
     }
 }
 
